@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halevi-Luttati | מערכת בדיקות מקדמיות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1d23;
+  --ink-soft: #3a3f48;
+  --ink-muted: #6b7280;
+  --ink-light: #9ca3af;
+  --paper: #fafaf7;
+  --paper-warm: #f5f3ed;
+  --line: #e5e2da;
+  --line-strong: #d4d0c4;
+  --accent: #8b1538;
+  --accent-soft: #f5e9ed;
+  --gold: #a67c2e;
+  --gold-soft: #faf3e1;
+  --success: #2d6a4f;
+  --success-soft: #e8f1ec;
+  --warning: #b45309;
+  --warning-soft: #faf0db;
+  --danger: #991b1b;
+  --danger-soft: #faecec;
+  --info: #1e40af;
+  --info-soft: #e8edf7;
+
+  --font-display: 'Frank Ruhl Libre', serif;
+  --font-body: 'Heebo', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ============ TOPBAR ============ */
+.topbar {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0;
+  border-bottom: 3px solid var(--gold);
+}
+.topbar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold);
+}
+.brand-text { line-height: 1.2; }
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.brand-sub {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-top: 2px;
+}
+.topnav { display: flex; gap: 28px; }
+.topnav a {
+  color: rgba(250, 250, 247, 0.7);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  transition: color 0.2s;
+  position: relative;
+}
+.topnav a.active { color: var(--paper); }
+.topnav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -22px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--gold);
+}
+.topnav a:hover { color: var(--paper); }
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 24px;
+  border-right: 1px solid rgba(250, 250, 247, 0.15);
+  margin-right: 24px;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 12px;
+}
+.topbar-actions { display: flex; align-items: center; }
+.user-info { line-height: 1.2; }
+.user-name { font-size: 13px; font-weight: 500; }
+.user-role { font-size: 10px; color: var(--ink-light); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ============ LAYOUT ============ */
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+/* ============ DASHBOARD VIEW ============ */
+.view { display: none; }
+.view.active { display: block; }
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+.page-title-block { }
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.page-subtitle {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-top: 8px;
+}
+
+.btn {
+  padding: 11px 22px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn:hover { background: var(--accent); border-color: var(--accent); }
+.btn.outline {
+  background: transparent;
+  color: var(--ink);
+}
+.btn.outline:hover { background: var(--ink); color: var(--paper); }
+.btn.ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border-color: var(--line-strong);
+}
+.btn.ghost:hover { color: var(--ink); border-color: var(--ink); background: transparent; }
+.btn.sm { padding: 7px 14px; font-size: 12px; }
+.btn.xs { padding: 5px 10px; font-size: 11px; }
+
+/* ============ STATS ============ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+.stat {
+  background: var(--paper);
+  padding: 22px 24px;
+}
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-delta {
+  font-size: 12px;
+  color: var(--success);
+  margin-top: 6px;
+}
+.stat-delta.neutral { color: var(--ink-muted); }
+
+/* ============ CASES TABLE ============ */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+}
+.section-tools { display: flex; gap: 10px; align-items: center; }
+.search-input {
+  padding: 9px 14px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  font-family: var(--font-body);
+  font-size: 13px;
+  width: 240px;
+  color: var(--ink);
+}
+.search-input:focus { outline: none; border-color: var(--ink); }
+
+.cases-table {
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.cases-row {
+  display: grid;
+  grid-template-columns: 60px 1.4fr 1fr 1fr 1fr 1.2fr 100px;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.cases-row:last-child { border-bottom: none; }
+.cases-row:hover { background: var(--paper-warm); }
+.cases-row.head {
+  background: var(--paper-warm);
+  cursor: default;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+.cases-row.head:hover { background: var(--paper-warm); }
+.case-num {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--ink-muted);
+}
+.case-title { font-weight: 500; }
+.case-sub {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 3px;
+}
+.case-client { color: var(--ink-soft); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: 1px solid currentColor;
+}
+.badge.accent { color: var(--accent); background: var(--accent-soft); border-color: var(--accent-soft); }
+.badge.gold { color: var(--gold); background: var(--gold-soft); border-color: var(--gold-soft); }
+.badge.success { color: var(--success); background: var(--success-soft); border-color: var(--success-soft); }
+.badge.warning { color: var(--warning); background: var(--warning-soft); border-color: var(--warning-soft); }
+.badge.info { color: var(--info); background: var(--info-soft); border-color: var(--info-soft); }
+.badge.neutral { color: var(--ink-muted); background: var(--paper-warm); border-color: var(--line); }
+.badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+}
+.progress-meta {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.next-action {
+  font-size: 12px;
+}
+.next-action-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.next-action-when {
+  color: var(--ink-muted);
+  margin-top: 3px;
+}
+
+.row-cta {
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-align: left;
+  letter-spacing: 0.05em;
+}
+.cases-row:hover .row-cta { color: var(--accent); }
+
+/* ============ CASE DETAIL VIEW ============ */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.back-link:hover { color: var(--accent); }
+
+.case-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  padding: 28px 32px;
+  background: var(--paper-warm);
+  border: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+.case-header-main { }
+.case-id {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.case-headline {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.case-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+.meta-item { }
+.meta-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 5px;
+}
+.meta-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.case-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.phase-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.phase-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+/* ============ TIMELINE PROGRESS ============ */
+.timeline-progress {
+  margin-bottom: 40px;
+  padding: 24px 32px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.timeline-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+}
+.timeline-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+}
+.timeline-stats {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+.timeline-stats strong { color: var(--ink); font-weight: 500; }
+.steps-bar {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-top: 12px;
+}
+.step-tick {
+  height: 30px;
+  background: var(--line);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.step-tick:hover { opacity: 0.85; }
+.step-tick.done { background: var(--success); }
+.step-tick.active { background: var(--accent); }
+.step-tick.review { background: var(--warning); }
+.step-tick.pending { background: var(--line-strong); }
+.step-tick-num {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: var(--paper);
+  font-weight: 600;
+}
+.step-tick.pending .step-tick-num { color: var(--ink-muted); }
+.step-tick-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 10px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  margin-bottom: 6px;
+  z-index: 10;
+}
+.step-tick:hover .step-tick-tooltip { opacity: 1; }
+
+/* ============ STEPS LIST ============ */
+.steps-section {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+}
+.steps-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.step-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition: all 0.2s;
+}
+.step-card:hover { border-color: var(--line-strong); }
+.step-card.expanded { border-color: var(--ink); }
+.step-card.done { background: var(--paper); }
+.step-card.active { border-color: var(--accent); border-width: 1.5px; }
+.step-card.review { border-color: var(--warning); border-right: 4px solid var(--warning); }
+
+.step-head {
+  display: grid;
+  grid-template-columns: 60px 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  cursor: pointer;
+}
+.step-index {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--ink-muted);
+  line-height: 1;
+}
+.step-card.done .step-index { color: var(--success); }
+.step-card.active .step-index { color: var(--accent); }
+
+.step-status-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1.5px solid;
+}
+.step-status-icon.done {
+  background: var(--success);
+  color: var(--paper);
+  border-color: var(--success);
+}
+.step-status-icon.active {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--accent);
+}
+.step-status-icon.review {
+  background: var(--warning);
+  color: var(--paper);
+  border-color: var(--warning);
+}
+.step-status-icon.pending {
+  background: var(--paper);
+  color: var(--ink-muted);
+  border-color: var(--line-strong);
+}
+
+.step-titleblock { min-width: 0; }
+.step-title {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.step-desc {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+.step-meta-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.step-cta-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chev {
+  font-size: 18px;
+  color: var(--ink-light);
+  transition: transform 0.2s;
+}
+.step-card.expanded .chev { transform: rotate(180deg); }
+
+/* Step body */
+.step-body {
+  display: none;
+  padding: 0 24px 24px 24px;
+  border-top: 1px solid var(--line);
+}
+.step-card.expanded .step-body { display: block; padding-top: 20px; }
+
+.body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.body-block { }
+.body-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+  display: block;
+}
+.body-content {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.body-list { list-style: none; padding: 0; }
+.body-list li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.body-list li:last-child { border-bottom: none; }
+.body-list .li-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+}
+.body-list .li-icon.ok { color: var(--success); }
+.body-list .li-icon.flag { color: var(--accent); }
+.body-list .li-icon.pending { color: var(--ink-light); }
+
+.checkitem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.checkitem:last-child { border-bottom: none; }
+.checkitem-name { font-size: 13px; }
+.checkitem-source { font-size: 11px; color: var(--ink-muted); }
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+}
+
+.auto-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--info-soft);
+  color: var(--info);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 0;
+}
+.auto-indicator.manual { background: var(--paper-warm); color: var(--ink-muted); }
+.auto-indicator.partial { background: var(--warning-soft); color: var(--warning); }
+
+/* ============ SIDEBAR ============ */
+.case-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sidecard {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 20px 22px;
+}
+.sidecard-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.sidecard-list { list-style: none; padding: 0; }
+.sidecard-list li {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+.sidecard-list li:last-child { border-bottom: none; }
+.sidecard-list .li-label {
+  color: var(--ink-muted);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.sidecard-list .li-value {
+  text-align: left;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.activity-item {
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 12px;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-when {
+  color: var(--ink-muted);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.activity-text { line-height: 1.5; }
+.activity-text strong { font-weight: 500; }
+
+.flag-card {
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+  border-right: 4px solid var(--danger);
+}
+.flag-card .sidecard-title {
+  color: var(--danger);
+  border-bottom-color: rgba(153, 27, 27, 0.2);
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* ============ MODAL ============ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 29, 35, 0.7);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: var(--paper);
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  border-top: 4px solid var(--accent);
+}
+.modal-head {
+  padding: 28px 32px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+}
+.modal-sub {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+.modal-body { padding: 24px 32px; }
+.modal-foot {
+  padding: 18px 32px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: var(--paper-warm);
+}
+.modal-step {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.modal-step:last-child { border-bottom: none; }
+.modal-step-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.modal-step-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.modal-step-icon.running {
+  background: var(--accent);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.modal-step-icon.pending {
+  background: var(--line);
+  color: var(--ink-muted);
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.modal-step-name { font-weight: 500; font-size: 14px; }
+.modal-step-desc {
+  font-size: 12px;
+  color: var(--ink-muted);
+  padding-right: 36px;
+}
+
+/* Form */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.form-row.full { grid-template-columns: 1fr; }
+.form-field { }
+.form-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+  display: block;
+}
+.form-input, .form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink);
+}
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 20px;
+  border-right: 3px solid var(--success);
+  font-size: 13px;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+/* responsive tweak */
+@media (max-width: 1100px) {
+  .steps-section { grid-template-columns: 1fr; }
+  .case-meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== TOPBAR ====== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">HL</div>
+      <div class="brand-text">
+        <div class="brand-name">Halevi · Luttati</div>
+        <div class="brand-sub">Real estate practice</div>
+      </div>
+    </div>
+    <nav class="topnav">
+      <a href="#" class="active">תיקים פעילים</a>
+      <a href="#">לקוחות</a>
+      <a href="#">תבניות</a>
+      <a href="#">ארכיון</a>
+      <a href="#">הגדרות</a>
+    </nav>
+    <div class="topbar-actions">
+      <div class="user-chip">
+        <div class="avatar">רה</div>
+        <div class="user-info">
+          <div class="user-name">רון הלוי</div>
+          <div class="user-role">שותף</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- ============================== -->
+<!-- DASHBOARD VIEW -->
+<!-- ============================== -->
+<div class="view active" id="view-dashboard">
+
+  <div class="page-header">
+    <div class="page-title-block">
+      <div class="eyebrow">לוח עבודה · בדיקות מקדמיות</div>
+      <h1 class="page-title">תיקים בשלב טרום־חתימה</h1>
+      <p class="page-subtitle">מעקב אחר עסקאות מקרקעין פעילות לפני חתימה על הסכם</p>
+    </div>
+    <button class="btn" onclick="openNewCaseModal()">
+      <span>+</span>
+      <span>תיק חדש</span>
+    </button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-label">תיקים פעילים</div>
+      <div class="stat-value">12</div>
+      <div class="stat-delta">+3 מהשבוע שעבר</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">בדיקות שהושלמו השבוע</div>
+      <div class="stat-value">38</div>
+      <div class="stat-delta">חיסכון של 47 שעות</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">דורש עיון</div>
+      <div class="stat-value">4</div>
+      <div class="stat-delta neutral">2 דחופים</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">חתימות צפויות</div>
+      <div class="stat-value">5</div>
+      <div class="stat-delta neutral">השבוע הקרוב</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2 class="section-title">תיקים פתוחים</h2>
+    <div class="section-tools">
+      <input type="text" class="search-input" placeholder="חיפוש לקוח, כתובת, גוש/חלקה...">
+      <button class="btn ghost sm">סינון</button>
+    </div>
+  </div>
+
+  <div class="cases-table">
+    <div class="cases-row head">
+      <div>#</div>
+      <div>נכס ועסקה</div>
+      <div>לקוח</div>
+      <div>סטטוס</div>
+      <div>התקדמות</div>
+      <div>הפעולה הבאה</div>
+      <div></div>
+    </div>
+
+    <div class="cases-row" onclick="openCaseDetail()">
+      <div class="case-num">01</div>
+      <div>
+        <div class="case-title">הרצל 15 דירה 4, רעננה</div>
+        <div class="case-sub">גוש 6582 · חלקה 142 · תת 4</div>
+      </div>
+      <div class="case-client">
+        <div>אבי ושירה כהן</div>
+        <div class="case-sub">רוכשים</div>
+      </div>
+      <div>
+        <span class="badge warning"><span class="dot"></span>דורש עיון</span>
+      </div>
+      <div>
+        <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+        <div class="progress-meta"><span>6 / 10 שלבים</span><span>60%</span></div>
+      </div>
+      <div class="next-action">
+        <div class="next-action-icon">בדיקת חריגות בנייה</div>
+        <div class="next-action-when">דורש פעולה ידנית של רון</div>
+      </div>
+      <div class="row-cta">פתיחה ←</div>
+    </div>
+
+    <div class="cases-row">
+      <div class="case-num">02</div>
+      <div>
+        <div class="case-title">ויצמן 8 דירה 12, חיפה</div>
+        <div class="case-sub">גוש 10821 · חלקה 56 · תת 12</div>
+      </div>
+      <div class="case-client">
+        <div>משפחת לוי</div>
+        <div class="case-sub">מוכרים</div>
+      </div>
+      <div>
+        <span class="badge success"><span class="dot"></span>תקין</span>
+      </div>
+      <div>
+        <div class="progress-track"><div class="progress-fill" style="width:80%"></div></div>
+        <div class="progress-meta"><span>8 / 10 שלבים</span><span>80%</span></div>
+      </div>
+      <div class="next-action">
+        <div class="next-action-icon">תיאום מועד חתימה</div>
+        <div class="next-action-when">בחמישי הקרוב</div>
+      </div>
+      <div class="row-cta">פתיחה ←</div>
+    </div>
+
+    <div class="cases-row">
+      <div class="case-num">03</div>
+      <div>
+        <div class="case-title">הנביאים 22 קומה ב', ירושלים</div>
+        <div class="case-sub">גוש 30198 · חלקה 4 · תת 7</div>
+      </div>
+      <div class="case-client">
+        <div>דניאל שטרן</div>
+        <div class="case-sub">רוכש - דירה יחידה</div>
+      </div>
+      <div>
+        <span class="badge info"><span class="dot"></span>בהמתנה</span>
+      </div>
+      <div>
+        <div class="progress-track"><div class="progress-fill" style="width:30%"></div></div>
+        <div class="progress-meta"><span>3 / 10 שלבים</span><span>30%</span></div>
+      </div>
+      <div class="next-action">
+        <div class="next-action-icon">בדיקת זהות והסטוריה</div>
+        <div class="next-action-when">אוטומטי · ממתין להפעלה</div>
+      </div>
+      <div class="row-cta">פתיחה ←</div>
+    </div>
+
+    <div class="cases-row">
+      <div class="case-num">04</div>
+      <div>
+        <div class="case-title">סוקולוב 47 דירה 8, הרצליה</div>
+        <div class="case-sub">גוש 6660 · חלקה 78 · תת 8</div>
+      </div>
+      <div class="case-client">
+        <div>בני שפירא</div>
+        <div class="case-sub">מוכר - דירה ירושה</div>
+      </div>
+      <div>
+        <span class="badge accent"><span class="dot"></span>דגלים אדומים</span>
+      </div>
+      <div>
+        <div class="progress-track"><div class="progress-fill" style="width:45%"></div></div>
+        <div class="progress-meta"><span>4 / 10 שלבים</span><span>45%</span></div>
+      </div>
+      <div class="next-action">
+        <div class="next-action-icon">שעבוד פעיל ברשם המשכונות</div>
+        <div class="next-action-when">דחוף · לפנייה ללקוח</div>
+      </div>
+      <div class="row-cta">פתיחה ←</div>
+    </div>
+
+    <div class="cases-row">
+      <div class="case-num">05</div>
+      <div>
+        <div class="case-title">בן יהודה 124 דירה 3, תל אביב</div>
+        <div class="case-sub">גוש 6213 · חלקה 18 · תת 3</div>
+      </div>
+      <div class="case-client">
+        <div>תאל ויניב מזרחי</div>
+        <div class="case-sub">רוכשים - משפר דיור</div>
+      </div>
+      <div>
+        <span class="badge neutral"><span class="dot"></span>טיוטה</span>
+      </div>
+      <div>
+        <div class="progress-track"><div class="progress-fill" style="width:15%"></div></div>
+        <div class="progress-meta"><span>1 / 10 שלבים</span><span>15%</span></div>
+      </div>
+      <div class="next-action">
+        <div class="next-action-icon">מילוי טופס לקוח</div>
+        <div class="next-action-when">נשלח ללקוח לפני 2 ימים</div>
+      </div>
+      <div class="row-cta">פתיחה ←</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Halevi · Luttati Law Office · בדיקות מקדמיות אוטומטיות · גרסה 0.1
+  </div>
+
+</div>
+
+<!-- ============================== -->
+<!-- CASE DETAIL VIEW -->
+<!-- ============================== -->
+<div class="view" id="view-case">
+
+  <a class="back-link" onclick="closeCaseDetail()">→ חזרה לרשימת התיקים</a>
+
+  <div class="case-header">
+    <div class="case-header-main">
+      <div class="case-id">תיק #01 · נפתח 18 במאי 2026</div>
+      <h1 class="case-headline">רכישת דירה ברחוב הרצל 15, רעננה</h1>
+      <div class="case-meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">לקוח</div>
+          <div class="meta-value">אבי ושירה כהן</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">צד שני</div>
+          <div class="meta-value">יוסי כהן · עו"ד דנה ברק</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">גוש / חלקה / תת</div>
+          <div class="meta-value">6582 · 142 · 4</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">סטטוס לקוח</div>
+          <div class="meta-value">דירה נוספת · משכנתא ₪1.2M</div>
+        </div>
+      </div>
+    </div>
+    <div class="case-header-actions">
+      <div class="phase-pill"><span class="dot"></span>שלב 1 · לפני החתימה</div>
+      <button class="btn outline sm">ייצוא דו"ח מלא</button>
+    </div>
+  </div>
+
+  <div class="timeline-progress">
+    <div class="timeline-head">
+      <div class="timeline-title">מפת התקדמות</div>
+      <div class="timeline-stats">
+        <strong>6</strong> הושלמו · <strong>1</strong> דורש עיון · <strong>3</strong> ממתינים ·
+        חיסכון זמן עד כה: <strong>4 שעות 20 דקות</strong>
+      </div>
+    </div>
+    <div class="steps-bar">
+      <div class="step-tick done"><span class="step-tick-num">1</span><span class="step-tick-tooltip">תשלום ופתיחת תיק</span></div>
+      <div class="step-tick done"><span class="step-tick-num">2</span><span class="step-tick-tooltip">שאלות מקדימות</span></div>
+      <div class="step-tick done"><span class="step-tick-num">3</span><span class="step-tick-tooltip">מסמכי פתיחה</span></div>
+      <div class="step-tick review"><span class="step-tick-num">4</span><span class="step-tick-tooltip">בדיקה בעירייה</span></div>
+      <div class="step-tick done"><span class="step-tick-num">5</span><span class="step-tick-tooltip">בדיקת הצדדים</span></div>
+      <div class="step-tick done"><span class="step-tick-num">6</span><span class="step-tick-tooltip">נסחי טאבו</span></div>
+      <div class="step-tick done"><span class="step-tick-num">7</span><span class="step-tick-tooltip">תיק בית משותף</span></div>
+      <div class="step-tick active"><span class="step-tick-num">8</span><span class="step-tick-tooltip">סקירת טיוטה</span></div>
+      <div class="step-tick pending"><span class="step-tick-num">9</span><span class="step-tick-tooltip">מו"מ ונספחים</span></div>
+      <div class="step-tick pending"><span class="step-tick-num">10</span><span class="step-tick-tooltip">תיאום חתימה</span></div>
+    </div>
+  </div>
+
+  <div class="steps-section">
+
+    <div class="steps-main">
+
+      <!-- STEP 1 - DONE -->
+      <div class="step-card done" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">01</div>
+          <div class="step-status-icon done">✓</div>
+          <div class="step-titleblock">
+            <div class="step-title">תשלום שכר טרחה ופתיחת תיק</div>
+            <div class="step-desc">שכ"ט התקבל · תיק נפתח בליגל · 18.5.2026</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">אוטומטי</span>
+              <span class="badge neutral">מנהלי</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-grid">
+            <div class="body-block">
+              <span class="body-label">תוצרים</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>אישור תשלום שכ"ט (₪9,500)</li>
+                <li><span class="li-icon ok">✓</span>תיק נפתח במערכת ליגל - #2026-0142</li>
+                <li><span class="li-icon ok">✓</span>הסכם שכר טרחה חתום</li>
+              </ul>
+            </div>
+            <div class="body-block">
+              <span class="body-label">מקור נתונים</span>
+              <div class="body-content">סליקת אשראי · ליגל CRM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 - DONE -->
+      <div class="step-card done" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">02</div>
+          <div class="step-status-icon done">✓</div>
+          <div class="step-titleblock">
+            <div class="step-title">שאלות מקדימות - איסוף פרטי לקוח ועסקה</div>
+            <div class="step-desc">15 שאלות נענו · דירה נוספת · משכנתא ₪1.2M · הון עצמי ₪480K</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">טופס דיגיטלי</span>
+              <span class="badge neutral">לקוח</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-grid">
+            <div class="body-block">
+              <span class="body-label">סיווג העסקה</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>דירה נוספת · לא ירושה · תושבי ישראל</li>
+                <li><span class="li-icon ok">✓</span>נוטל משכנתא · אישור עקרוני בתוקף</li>
+                <li><span class="li-icon ok">✓</span>הסכם ממון · לא קיבלו דירה במתנה</li>
+                <li><span class="li-icon flag">!</span>יש שוכרים בדירה הנמכרת (פינוי ב-15.10)</li>
+              </ul>
+            </div>
+            <div class="body-block">
+              <span class="body-label">תנאים מיוחדים</span>
+              <ul class="body-list">
+                <li>מסירת חזקה: 1.12.2026</li>
+                <li>מזגנים נשארים, ארונות מטבח נשארים</li>
+                <li>לא ידוע על חריגות בנייה</li>
+                <li>אין התחדשות עירונית בבניין</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <button class="btn ghost sm">צפייה בטופס מלא</button>
+            <button class="btn ghost sm">שליחה ללקוח לעדכון</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 - DONE -->
+      <div class="step-card done" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">03</div>
+          <div class="step-status-icon done">✓</div>
+          <div class="step-titleblock">
+            <div class="step-title">הכנת חבילת מסמכים</div>
+            <div class="step-desc">6 מסמכים נוצרו אוטומטית · תחשיב מס רכישה: ₪38,420</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">נוצר אוטומטית</span>
+              <span class="badge neutral">מסמכים</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-grid">
+            <div class="body-block">
+              <span class="body-label">מסמכים שנוצרו</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>צ'ק ליסט שלבי הסכם המכר</li>
+                <li><span class="li-icon ok">✓</span>טופס הכר את הלקוח (KYC)</li>
+                <li><span class="li-icon ok">✓</span>תחשיב מס רכישה · ₪38,420</li>
+                <li><span class="li-icon ok">✓</span>פרטי חיוב לקוח לאגרות</li>
+                <li><span class="li-icon ok">✓</span>צילומי ת.ז. (סרוקים)</li>
+              </ul>
+            </div>
+            <div class="body-block">
+              <span class="body-label">פירוט מס רכישה</span>
+              <ul class="body-list">
+                <li>שווי הרכישה: ₪2,400,000</li>
+                <li>סוג: דירה נוספת</li>
+                <li>מדרגה 1 (8% עד ₪6.05M): ₪192,000</li>
+                <li><strong>סה"כ צפוי: ₪38,420</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 - REVIEW (FLAGGED) -->
+      <div class="step-card review expanded" onclick="event.target.closest('.step-card').classList.toggle('expanded')">
+        <div class="step-head">
+          <div class="step-index">04</div>
+          <div class="step-status-icon review">!</div>
+          <div class="step-titleblock">
+            <div class="step-title">בדיקה תכנונית בעירייה</div>
+            <div class="step-desc">5 בדיקות הושלמו · 1 דגל אדום · חשד לחריגת בנייה במרפסת</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator partial">חלקי</span>
+              <span class="badge warning">דורש עיון ידני</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <button class="btn sm" onclick="event.stopPropagation()">לבדיקה</button>
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-grid">
+            <div class="body-block">
+              <span class="body-label">בדיקות אוטומטיות שעברו</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>היתר בנייה · 2003 · תקין</li>
+                <li><span class="li-icon ok">✓</span>טופס 4 · קיים · ינואר 2005</li>
+                <li><span class="li-icon ok">✓</span>היטל השבחה · לא קיים</li>
+                <li><span class="li-icon ok">✓</span>GovMap · אין תכניות עתידיות באזור</li>
+                <li><span class="li-icon ok">✓</span>אין צו הריסה או הפקעה</li>
+              </ul>
+            </div>
+            <div class="body-block">
+              <span class="body-label" style="color: var(--accent)">דגל אדום - דורש פעולה</span>
+              <div class="body-content" style="background: var(--accent-soft); padding: 14px; border-right: 3px solid var(--accent); margin-top: 4px;">
+                <div style="font-weight: 500; margin-bottom: 6px;">חשד לחריגת בנייה במרפסת</div>
+                <div style="font-size: 12px; color: var(--ink-muted); line-height: 1.6;">
+                  השוואה בין תשריט הבית המשותף ל-Aerial View מ-GovMap העלתה חשד שהמרפסת הצדדית הוסבה לחדר. נדרשת בדיקה ידנית של תיק הבניין במחלקת ההנדסה של עיריית רעננה.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <button class="btn sm">פתיחת תיק בניין דיגיטלי</button>
+            <button class="btn ghost sm">סימון כנבדק ידנית</button>
+            <button class="btn ghost sm">הוספת הערה</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 - DONE -->
+      <div class="step-card done" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">05</div>
+          <div class="step-status-icon done">✓</div>
+          <div class="step-titleblock">
+            <div class="step-title">בדיקת זהות והיסטוריה של הצדדים</div>
+            <div class="step-desc">5 מקורות נבדקו · אין דגלים אדומים על אף צד</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">אוטומטי מלא</span>
+              <span class="badge neutral">בדיקה</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-grid">
+            <div class="body-block">
+              <span class="body-label">קונים - אבי ושירה כהן</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>הוצל"פ · נקיים</li>
+                <li><span class="li-icon ok">✓</span>חדלות פירעון · נקיים</li>
+                <li><span class="li-icon ok">✓</span>חשבון מוגבל בנק ישראל · נקי</li>
+                <li><span class="li-icon ok">✓</span>רשם המשכונות · אין שעבודים</li>
+              </ul>
+            </div>
+            <div class="body-block">
+              <span class="body-label">מוכר - יוסי כהן</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>הוצל"פ · נקי</li>
+                <li><span class="li-icon ok">✓</span>חדלות פירעון · נקי</li>
+                <li><span class="li-icon ok">✓</span>חשבון מוגבל בנק ישראל · נקי</li>
+                <li><span class="li-icon ok">✓</span>פרסומים משרד המשפטים · נקי</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 - DONE -->
+      <div class="step-card done" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">06</div>
+          <div class="step-status-icon done">✓</div>
+          <div class="step-titleblock">
+            <div class="step-title">הוצאת נסחי טאבו</div>
+            <div class="step-desc">נסח מרוכז + פרטני · ₪30 · נמשך לפני 3 ימים</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">אוטומטי מלא</span>
+              <span class="badge neutral">קנייני</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-grid">
+            <div class="body-block">
+              <span class="body-label">מצב הרישום</span>
+              <ul class="body-list">
+                <li>בעלות מלאה · יוסי כהן ת.ז. 03****6</li>
+                <li>תאריך רישום: 14.3.2014</li>
+                <li>סוג: בית משותף · תת חלקה 4</li>
+                <li>חניה 12 ומחסן 4 מוצמדים</li>
+              </ul>
+            </div>
+            <div class="body-block">
+              <span class="body-label">שעבודים והערות</span>
+              <ul class="body-list">
+                <li><span class="li-icon ok">✓</span>משכנתא · בנק לאומי · ₪420,000</li>
+                <li><span class="li-icon ok">✓</span>אין הערות אזהרה אחרות</li>
+                <li><span class="li-icon ok">✓</span>אין תיקי הוצל"פ נגד הנכס</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 - DONE -->
+      <div class="step-card done" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">07</div>
+          <div class="step-status-icon done">✓</div>
+          <div class="step-titleblock">
+            <div class="step-title">תיק בית משותף</div>
+            <div class="step-desc">תשריט + צו רישום + תקנון · 18 דירות, חניות והצמדות תואמות</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">אוטומטי מלא</span>
+              <span class="badge neutral">קנייני</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-content">
+            ניתוח התשריט עם זיהוי תמונה אישר את הצמדת חניה 12 ומחסן 4 לדירה 4. תקנון הבית המשותף סטנדרטי - אין הגבלות חריגות על השכרה או שינויים פנימיים.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 8 - ACTIVE -->
+      <div class="step-card active" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">08</div>
+          <div class="step-status-icon active">●</div>
+          <div class="step-titleblock">
+            <div class="step-title">סקירת טיוטת ההסכם</div>
+            <div class="step-desc">טיוטה התקבלה מעו"ד הצד השני · בסקירה אוטומטית של AI</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator partial">AI + סקירה ידנית</span>
+              <span class="badge accent">פעיל עכשיו</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <button class="btn sm" onclick="event.stopPropagation()">המשך בדיקה</button>
+            <span class="chev">▼</span>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="body-content">
+            ניתוח אוטומטי של 14 סעיפי מפתח בהסכם מול checklist המשרד. AI סימן 3 סעיפים שדורשים עיון של רון לפני אישור.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 9 - PENDING -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">09</div>
+          <div class="step-status-icon pending">○</div>
+          <div class="step-titleblock">
+            <div class="step-title">מו"מ וקבלת נספחים</div>
+            <div class="step-desc">ממתין לסיום שלב 8</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator manual">ידני</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 10 - PENDING -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-head">
+          <div class="step-index">10</div>
+          <div class="step-status-icon pending">○</div>
+          <div class="step-titleblock">
+            <div class="step-title">תיאום מועד חתימה</div>
+            <div class="step-desc">ממתין לסיום שלבים קודמים</div>
+            <div class="step-meta-tags">
+              <span class="auto-indicator">אוטומטי</span>
+            </div>
+          </div>
+          <div class="step-cta-area">
+            <span class="chev">▼</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <aside class="case-sidebar">
+
+      <div class="sidecard flag-card">
+        <div class="sidecard-title">דגלים אדומים (1)</div>
+        <div class="body-content" style="font-size: 12px; line-height: 1.6;">
+          חשד לחריגת בנייה במרפסת הצדדית - השוואה בין תשריט ל-Aerial View העלתה אי-התאמה. נדרשת בדיקת תיק בניין ידנית.
+        </div>
+        <div style="margin-top: 12px;">
+          <button class="btn outline xs">פעולה ←</button>
+        </div>
+      </div>
+
+      <div class="sidecard">
+        <div class="sidecard-title">פרטי העסקה</div>
+        <ul class="sidecard-list">
+          <li>
+            <span class="li-label">שווי העסקה</span>
+            <span class="li-value">₪2,400,000</span>
+          </li>
+          <li>
+            <span class="li-label">מס רכישה צפוי</span>
+            <span class="li-value">₪38,420</span>
+          </li>
+          <li>
+            <span class="li-label">היטל השבחה</span>
+            <span class="li-value">אין</span>
+          </li>
+          <li>
+            <span class="li-label">משכנתא קונה</span>
+            <span class="li-value">₪1,200,000</span>
+          </li>
+          <li>
+            <span class="li-label">מסירת חזקה</span>
+            <span class="li-value">1.12.2026</span>
+          </li>
+          <li>
+            <span class="li-label">תאריך חתימה צפוי</span>
+            <span class="li-value">28.5.2026</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidecard">
+        <div class="sidecard-title">פעילות אחרונה</div>
+        <div class="activity-item">
+          <div class="activity-when">לפני 12 דקות</div>
+          <div class="activity-text">המערכת סימנה <strong>דגל אדום</strong> בשלב 4 - חשד לחריגת בנייה</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-when">לפני 38 דקות</div>
+          <div class="activity-text">טיוטת ההסכם התקבלה מ-עו"ד דנה ברק (mail.com)</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-when">היום 09:14</div>
+          <div class="activity-text">בדיקת זהות הצדדים הושלמה אוטומטית - 4/4 מקורות תקינים</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-when">אתמול</div>
+          <div class="activity-text">נסחי טאבו ותיק בית משותף נמשכו (עלות: ₪45)</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-when">לפני 3 ימים</div>
+          <div class="activity-text">הלקוח השלים את טופס השאלות המקדימות</div>
+        </div>
+      </div>
+
+      <div class="sidecard">
+        <div class="sidecard-title">צוות התיק</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="avatar" style="background: var(--accent); color: var(--paper); width: 32px; height: 32px;">רה</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500;">רון הלוי</div>
+              <div style="font-size: 11px; color: var(--ink-muted);">עו"ד אחראי</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="avatar" style="background: var(--ink-soft); color: var(--paper); width: 32px; height: 32px;">לל</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500;">לב לוטטי</div>
+              <div style="font-size: 11px; color: var(--ink-muted);">שותף</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+</main>
+
+<!-- ============ NEW CASE MODAL ============ -->
+<div class="modal-backdrop" id="newCaseModal" onclick="closeNewCaseModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div class="modal-title">פתיחת תיק חדש</div>
+      <div class="modal-sub">הזנת פרטים בסיסיים · המערכת תפעיל בדיקות אוטומטיות אחרי השמירה</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">סוג העסקה</label>
+          <select class="form-select">
+            <option>רכישה</option>
+            <option>מכירה</option>
+            <option>החלפה</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">שם הלקוח</label>
+          <input class="form-input" placeholder="לדוגמה: אבי כהן">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">גוש</label>
+          <input class="form-input" placeholder="6582">
+        </div>
+        <div class="form-field">
+          <label class="form-label">חלקה</label>
+          <input class="form-input" placeholder="142">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">תת חלקה</label>
+          <input class="form-input" placeholder="4">
+        </div>
+        <div class="form-field">
+          <label class="form-label">טלפון לקוח</label>
+          <input class="form-input" placeholder="054-...">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-field">
+          <label class="form-label">כתובת הנכס</label>
+          <input class="form-input" placeholder="הרצל 15 דירה 4, רעננה">
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; padding: 16px; background: var(--info-soft); border-right: 3px solid var(--info); font-size: 12px;">
+        <div style="font-weight: 500; margin-bottom: 4px; color: var(--info);">מה יקרה אחרי שמירה?</div>
+        <div style="color: var(--ink-soft); line-height: 1.7;">
+          המערכת תשלח אוטומטית טופס השלמת פרטים ללקוח, תזמין נסח טאבו, ותפעיל בדיקה ראשונית של הצדדים מול 5 מקורות.
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" onclick="closeNewCaseModal()">ביטול</button>
+      <button class="btn" onclick="submitNewCase()">פתיחת תיק והפעלת בדיקות</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">תיק נפתח · בדיקות אוטומטיות החלו</div>
+
+<script>
+function openCaseDetail() {
+  document.getElementById('view-dashboard').classList.remove('active');
+  document.getElementById('view-case').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function closeCaseDetail() {
+  document.getElementById('view-case').classList.remove('active');
+  document.getElementById('view-dashboard').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function toggleStep(el) {
+  el.classList.toggle('expanded');
+}
+
+function openNewCaseModal() {
+  document.getElementById('newCaseModal').classList.add('show');
+}
+
+function closeNewCaseModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('btn')) return;
+  document.getElementById('newCaseModal').classList.remove('show');
+}
+
+function submitNewCase() {
+  closeNewCaseModal();
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+</script>
+
+</body>
+</html>
