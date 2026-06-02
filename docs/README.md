@@ -5,6 +5,7 @@ Project documentation for the Halevi-Luttati Pre-Contract Real Estate Due Dilige
 | Document | Description |
 |----------|-------------|
 | [PRD-Phase1-Pre-Signing.md](PRD-Phase1-Pre-Signing.md) | Phase 1 Product Requirements Document — the 10 pre-signing due-diligence steps, architecture, data models, API, roadmap. |
+| [FOUNDATION-STATUS.md](FOUNDATION-STATUS.md) | What's implemented in the Foundation slice + verification results. |
 | [halevi_luttati_demo.html](halevi_luttati_demo.html) | Approved Hebrew/RTL UI demo. Source of approved Hebrew copy — reuse strings verbatim. |
 | `superpowers/specs/` | Design specs produced during planning. |
 

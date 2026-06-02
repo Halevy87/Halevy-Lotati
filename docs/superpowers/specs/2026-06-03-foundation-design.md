@@ -3,7 +3,7 @@
 **Project:** Halevi-Luttati Pre-Contract Real Estate Due Diligence Platform
 **Slice:** Foundation (Sprint 0)
 **Date:** 2026-06-03
-**Status:** Approved — ready for implementation planning
+**Status:** Implemented — see [FOUNDATION-STATUS.md](../../FOUNDATION-STATUS.md)
 **Source PRD:** [PRD-Phase1-Pre-Signing.md](../../PRD-Phase1-Pre-Signing.md)
 
 ---
