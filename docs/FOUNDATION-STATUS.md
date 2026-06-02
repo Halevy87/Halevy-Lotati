@@ -70,6 +70,25 @@ uvicorn app.main:app --reload             # http://localhost:8000  (docs at /doc
 cd apps/web && npm install && npm run dev  # http://localhost:3000
 ```
 
+## Repository & push status
+
+All Foundation work is committed locally on `master`. As of this session the branch is
+ahead of `origin/master` and **not yet pushed**, blocked by two independent issues:
+
+1. **Local deny rule** — `~/.claude/settings.json` contains
+   `"deny": ["Bash(git push)", "Bash(git push:*)"]`, which prevents the agent from
+   running `git push`. (Resolve by removing the rule, or push manually.)
+2. **GitHub access** — the active GitHub identity (`Pipl-Barr`, forced by the
+   `GITHUB_TOKEN` env var) lacks write access to `Halevy87/Halevy-Lotati` and gets
+   `403 Forbidden`. Resolve by adding `Pipl-Barr` as a collaborator, switching to an
+   account with write access, or forking + PR.
+
+To push manually once access is sorted:
+
+```bash
+git push origin master
+```
+
 ## Next slice
 **Step 5 — Identity & risk check** (5 government-site scrapers). Highest ROI, zero-auth,
 de-risks the scraping infrastructure (PRD Appendix B).
