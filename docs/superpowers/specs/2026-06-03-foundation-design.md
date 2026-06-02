@@ -42,6 +42,27 @@ fonts with Hebrew subset, Tailwind logical properties, RTL-validated shadcn/ui.
 Hebrew copy is sourced from the approved demo (`docs/halevi_luttati_demo.html`) —
 never machine-translated.
 
+## PII / Israeli ID Safety Rule (Foundation = dev-only)
+
+The PRD (§11) requires Israeli IDs to be encrypted at rest (AES-256-GCM) and hosted in
+an approved jurisdiction. Foundation has **no auth, no secrets/key management, and no
+cloud storage**, so it cannot satisfy these requirements — implementing field encryption
+here would be premature (no safe place for the key) and give a false sense of security.
+
+Therefore, as a **hard rule for this slice**:
+
+- Foundation runs **local-dev only** and **must not process real client PII**.
+- All Israeli IDs used during Foundation development/testing must be **synthetic / fake**
+  (e.g. algorithmically-valid-but-fictional test IDs), never a real person's ID.
+- The `Party.israeli_id` column is stored **in plaintext in Foundation** and is acceptable
+  *only* because the data is synthetic and the database is local.
+- **Real PII handling is blocked until the security/auth slice** delivers application-layer
+  field encryption + key management + approved-jurisdiction hosting. That slice must run
+  a data migration to encrypt the column before any real ID is entered.
+- The seed data and any test fixtures use clearly-fake IDs and names.
+
+This is enforced as an acceptance criterion below.
+
 ---
 
 ## 1. Repo Structure & Tooling
@@ -81,8 +102,9 @@ Built now (per PRD §8). Remaining tables arrive with their slices.
   `taboo_data`, `condo_data`, `contract_review`, `addenda_checklist`), created
   **nullable** so later slices fill them in without a migration churn. Computed
   `red_flags_count` and `completion_percentage`.
-- **Party** — buyer / seller / guarantor / spouse on a case. `israeli_id` column present;
-  application-layer encryption hook deferred to the security/auth slice.
+- **Party** — buyer / seller / guarantor / spouse on a case. `israeli_id` column present
+  and stored **plaintext in Foundation (synthetic IDs only)** — see the PII Safety Rule
+  above. Application-layer encryption + migration deferred to the security/auth slice.
 - **Activity** — audit log. Foundation writes `case_opened` and `note_added`.
 - **Document** — table created; upload/download endpoints deferred (no R2 storage yet).
 
@@ -145,9 +167,19 @@ TDD throughout (superpowers discipline — tests before implementation).
 
 - **Backend:** pytest against an ephemeral Postgres; API tests for every CRUD path,
   case-number generation, and activity logging.
-- **Frontend:** Vitest + Testing Library for components; one Playwright e2e that loads
-  the dashboard and asserts RTL rendering, run on Chromium + WebKit (covers the
-  Safari / iOS concern from §0).
+- **Frontend:** Vitest + Testing Library for components; Playwright e2e that loads the
+  dashboard + case-detail and asserts RTL rendering. Per PRD §0 the browser matrix is
+  Chrome, Safari, **mobile Safari iOS, and Android Chrome** — Playwright runs:
+  - **Desktop Chromium** (Chrome) and **Desktop WebKit** (Safari)
+  - **Mobile WebKit** at an iPhone viewport (Mobile Safari iOS) — §0 flags this as the
+    riskiest target for text-input direction flips
+  - **Mobile Chromium** at a Pixel/Android viewport (Android Chrome)
+
+  Assertions: `dir="rtl"`/`lang="he"` applied, Hebrew fonts loaded, no horizontal
+  overflow at mobile widths, directional layout correct (sidebar on the right, etc.).
+- **Manual review gate:** No screen ships until **Ron (native Hebrew speaker) reviews
+  it** — PRD §0 "Testing Requirement." Foundation screens (dashboard, new-case modal,
+  case-detail shell) are queued for Ron's review before the slice is marked done.
 - **CI:** GitHub Actions runs ruff + pytest (api) and lint + vitest + playwright (web)
   on push.
 
@@ -162,5 +194,9 @@ storage (R2), email / WhatsApp, cloud deployment. Each is a later slice.
 - A dev user can open the dashboard (Hebrew UI), create a case via the modal (Hebrew
   form), and see it in the dashboard table.
 - Case detail page renders with the 10-step timeline and placeholder step cards.
-- All Hebrew text renders correctly RTL on Chromium and WebKit.
+- All Hebrew text renders correctly RTL on desktop Chrome + Safari **and** mobile Safari
+  (iOS viewport) + Android Chrome (Android viewport), with no horizontal overflow.
+- Ron has reviewed the Hebrew of every Foundation screen and signed off.
+- No real client PII exists anywhere in the system; all Israeli IDs in seed/test data are
+  synthetic. (PII Safety Rule above.)
 - CI green: both test suites pass on push.
