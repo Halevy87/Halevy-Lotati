@@ -1,0 +1,93 @@
+{
+  "app": {
+    "title": "הלוי · לוטטי",
+    "subtitle": "בדיקות מקדמיות לעסקאות נדל\"ן"
+  },
+  "nav": {
+    "dashboard": "לוח עבודה",
+    "clients": "לקוחות",
+    "templates": "תבניות",
+    "archive": "ארכיון",
+    "settings": "הגדרות",
+    "backToDashboard": "חזרה ללוח העבודה"
+  },
+  "dashboard": {
+    "title": "לוח עבודה",
+    "newCase": "תיק חדש",
+    "kpi": {
+      "activeCases": "תיקים פעילים",
+      "checksThisWeek": "בדיקות שהושלמו השבוע",
+      "needsAttention": "דורש עיון",
+      "signingsThisWeek": "חתימות השבוע"
+    },
+    "table": {
+      "caseNumber": "מספר תיק",
+      "address": "כתובת הנכס",
+      "client": "לקוח",
+      "status": "סטטוס",
+      "progress": "התקדמות",
+      "nextAction": "הפעולה הבאה",
+      "empty": "אין תיקים פעילים. צרו תיק חדש כדי להתחיל."
+    }
+  },
+  "case": {
+    "phase": "שלב 1 · לפני החתימה",
+    "counterparty": "צד שני",
+    "dealValue": "שווי העסקה",
+    "blockParcel": "גוש / חלקה / תת חלקה",
+    "recentActivity": "פעילות אחרונה",
+    "redFlags": "דגלים אדומים",
+    "noRedFlags": "אין דגלים אדומים",
+    "dealDetails": "פרטי העסקה",
+    "noActivity": "אין פעילות עדיין",
+    "steps": {
+      "1": "תשלום ופתיחת תיק",
+      "2": "טופס פרטי לקוח",
+      "3": "הכנת מסמכים",
+      "4": "בדיקת עירייה ותכנון",
+      "5": "בדיקת זהות וסיכון",
+      "6": "נסחי טאבו",
+      "7": "תיק בית משותף",
+      "8": "בדיקת טיוטת חוזה",
+      "9": "משא ומתן ונספחים",
+      "10": "תיאום מועד חתימה"
+    },
+    "automation": {
+      "full": "אוטומטי",
+      "partial": "חלקי",
+      "ai": "מבוסס AI",
+      "manual": "ידני"
+    },
+    "stepStatus": {
+      "pending": "ממתין",
+      "comingSoon": "יפותח בהמשך"
+    }
+  },
+  "newCase": {
+    "title": "פתיחת תיק חדש",
+    "dealType": "סוג עסקה",
+    "dealTypes": { "purchase": "רכישה", "sale": "מכירה", "exchange": "חליפין" },
+    "block": "גוש",
+    "parcel": "חלקה",
+    "subParcel": "תת חלקה",
+    "address": "כתובת הנכס",
+    "city": "עיר",
+    "clientName": "שם הלקוח",
+    "clientId": "תעודת זהות",
+    "clientPhone": "טלפון",
+    "clientEmail": "דוא\"ל",
+    "counterpartyLawyer": "עורך דין צד שני",
+    "submit": "פתיחת תיק ושליחת טופס",
+    "cancel": "ביטול",
+    "required": "שדה חובה"
+  },
+  "status": {
+    "intake_pending": "ממתין לפרטי לקוח",
+    "intake_complete": "פרטים התקבלו",
+    "in_progress": "בביצוע",
+    "needs_attention": "דורש עיון",
+    "signing_scheduled": "חתימה תואמה",
+    "signed": "נחתם",
+    "archived": "בארכיון"
+  }
+}

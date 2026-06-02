@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: halevy_postgres
+    environment:
+      POSTGRES_USER: halevy
+      POSTGRES_PASSWORD: halevy
+      POSTGRES_DB: halevy
+    ports:
+      - "5544:5432"   # 5544 on host to avoid colliding with a native Postgres on 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U halevy"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: halevy_redis
+    # Present for future Celery background jobs (Step 5+). Idle in Foundation.
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

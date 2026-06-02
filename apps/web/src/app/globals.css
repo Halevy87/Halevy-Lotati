@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: theme("colors.paper");
+  color: theme("colors.ink");
+}
+
+/* Numbers / Latin within Hebrew flow should not break direction (PRD §0 bidi). */
+.bidi-isolate {
+  unicode-bidi: isolate;
+}
