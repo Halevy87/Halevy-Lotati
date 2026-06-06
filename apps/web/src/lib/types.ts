@@ -53,9 +53,14 @@ export interface Activity {
 }
 
 export interface CaseDetail extends CaseListItem {
-  block: string;
-  parcel: string;
+  block: string | null;
+  parcel: string | null;
   sub_parcel: string | null;
+  resolved_gush: string | null;
+  resolved_chelka: string | null;
+  resolved_tat_chelka: string | null;
+  apartment_number_claimed: string | null;
+  property_coordinates: Record<string, number> | null;
   deal_value_ils: number | null;
   counterparty_lawyer_name: string | null;
   counterparty_lawyer_phone: string | null;
@@ -67,8 +72,8 @@ export interface CaseDetail extends CaseListItem {
 
 export interface CreateCaseInput {
   deal_type: DealType;
-  block: string;
-  parcel: string;
+  block?: string | null;
+  parcel?: string | null;
   sub_parcel?: string | null;
   property_address: string;
   property_city: string;
@@ -80,4 +85,33 @@ export interface CreateCaseInput {
     phone?: string | null;
     email?: string | null;
   };
+}
+
+export type AddressResolutionStatus =
+  | "auto_resolved"
+  | "multi_candidate"
+  | "manual_entry"
+  | "failed";
+
+export interface AddressResolution {
+  id: string;
+  case_id: string;
+  city: string;
+  street: string;
+  number: string;
+  apartment_number_claimed: string | null;
+  status: AddressResolutionStatus;
+  resolved_gush: string | null;
+  resolved_chelka: string | null;
+  resolved_tat_chelka: string | null;
+  coordinates: Record<string, number> | null;
+  method: string;
+  resolution_time_ms: number;
+  resolved_at: string;
+}
+
+export interface ManualResolutionInput {
+  gush: string;
+  chelka: string;
+  tat_chelka?: string | null;
 }

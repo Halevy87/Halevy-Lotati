@@ -1,4 +1,10 @@
-import type { CaseDetail, CaseList, CreateCaseInput } from "./types";
+import type {
+  AddressResolution,
+  CaseDetail,
+  CaseList,
+  CreateCaseInput,
+  ManualResolutionInput,
+} from "./types";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -21,6 +27,24 @@ export const api = {
   createCase: (input: CreateCaseInput) =>
     request<CaseDetail>("/api/cases", {
       method: "POST",
+      body: JSON.stringify(input),
+    }),
+  resolveAddress: (id: string) =>
+    request<AddressResolution>(`/api/cases/${id}/resolve-address`, {
+      method: "POST",
+      body: JSON.stringify({}),
+    }),
+  getAddressResolution: async (id: string): Promise<AddressResolution | null> => {
+    const res = await fetch(`${BASE_URL}/api/cases/${id}/address-resolution`, {
+      headers: { "content-type": "application/json" },
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+    return (await res.json()) as AddressResolution;
+  },
+  manualResolution: (id: string, input: ManualResolutionInput) =>
+    request<AddressResolution>(`/api/cases/${id}/address-resolution/manual`, {
+      method: "PATCH",
       body: JSON.stringify(input),
     }),
 };
