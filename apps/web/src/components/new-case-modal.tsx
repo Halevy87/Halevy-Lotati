@@ -24,8 +24,8 @@ export function NewCaseModal({ onClose }: { onClose: () => void }) {
     mutationFn: (values: NewCaseForm) =>
       api.createCase({
         deal_type: values.deal_type,
-        block: values.block,
-        parcel: values.parcel,
+        block: values.block || null,
+        parcel: values.parcel || null,
         sub_parcel: values.sub_parcel || null,
         property_address: values.property_address,
         property_city: values.property_city,
