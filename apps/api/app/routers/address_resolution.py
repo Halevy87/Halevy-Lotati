@@ -18,7 +18,7 @@ from app.services import govmap
 
 router = APIRouter(prefix="/api/cases", tags=["address-resolution"])
 
-_ADDR_RE = re.compile(r"^(.*?)[\s,]*(\d+)\s*$")
+_ADDR_RE = re.compile(r"^(.*?)[\s,]*(\d+)(?:[/\-]\d+)?\s*$")
 
 
 def _get_case_or_404(db: Session, case_id: uuid.UUID) -> Case:
@@ -29,10 +29,16 @@ def _get_case_or_404(db: Session, case_id: uuid.UUID) -> Case:
 
 
 def _split_address(address: str) -> tuple[str, str]:
-    """Best-effort split of a free-text address into (street, number)."""
+    """Best-effort split of a free-text address into (street, number).
+
+    Known limitation: addresses ending in a Hebrew apartment suffix (e.g. "הרצל 12א")
+    won't match and are returned as (full_address, ""). GovMap autocomplete usually
+    still resolves these via fuzzy matching.
+    """
     m = _ADDR_RE.match((address or "").strip())
     if m:
-        return m.group(1).strip(), m.group(2)
+        street = re.sub(r"[\s,/\-]+$", "", m.group(1)).strip()
+        return street, m.group(2)
     return (address or "").strip(), ""
 
 
@@ -121,7 +127,7 @@ def manual_resolution(
     row = AddressResolution(
         case_id=case.id,
         city=case.property_city,
-        street="",
+        street="",  # manual entry has no street/number inputs; columns are NOT NULL
         number="",
         status="manual_entry",
         method="manual",

@@ -72,6 +72,10 @@ def test_resolve_failed_token_not_configured(client, monkeypatch):
     activity = client.get(f"/api/cases/{cid}/activity").json()
     assert any(a["type"] == "scraping_failed" for a in activity)
 
+    case = client.get(f"/api/cases/{cid}").json()
+    assert case["resolved_gush"] is None
+    assert case["block"] is None
+
 
 def test_get_address_resolution_404_then_latest(client, monkeypatch):
     cid = _make_case(client)
@@ -110,3 +114,40 @@ def test_manual_resolution(client):
 
 def test_resolve_missing_case_404(client):
     assert client.post(f"/api/cases/{uuid.uuid4()}/resolve-address", json={}).status_code == 404
+
+
+def test_existing_block_not_overwritten_on_resolve(client, monkeypatch):
+    def fake_resolve(city, street, number, **kwargs):
+        return govmap.AddressResolutionResult(
+            status="auto_resolved", gush="7136", chelka="142",
+            coordinates={"x": 1.0, "y": 2.0},
+        )
+
+    monkeypatch.setattr(govmap, "resolve", fake_resolve)
+    cid = _make_case(client)
+    client.patch(f"/api/cases/{cid}", json={"block": "9999", "parcel": "8888"})
+
+    client.post(f"/api/cases/{cid}/resolve-address", json={})
+    case = client.get(f"/api/cases/{cid}").json()
+    assert case["block"] == "9999"   # curated value preserved
+    assert case["parcel"] == "8888"
+    assert case["resolved_gush"] == "7136"  # resolution still tracked
+    assert case["resolved_chelka"] == "142"
+
+
+def test_resolve_parses_street_and_number_from_address(client, monkeypatch):
+    captured = {}
+
+    def fake_resolve(city, street, number, **kwargs):
+        captured["city"] = city
+        captured["street"] = street
+        captured["number"] = number
+        return govmap.AddressResolutionResult(status="failed", reason="not_found")
+
+    monkeypatch.setattr(govmap, "resolve", fake_resolve)
+    cid = client.post("/api/cases", json=_case_payload(property_address="הנביאים 5/3")).json()["id"]
+
+    client.post(f"/api/cases/{cid}/resolve-address", json={})
+    assert captured["street"] == "הנביאים"
+    assert captured["number"] == "5"
+    assert captured["city"] == "בת ים"
