@@ -22,11 +22,18 @@ class Case(Base):
     current_step: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     # Property
-    block: Mapped[str] = mapped_column(String, nullable=False)  # gush
-    parcel: Mapped[str] = mapped_column(String, nullable=False)  # chelka
+    block: Mapped[str | None] = mapped_column(String, nullable=True)  # gush
+    parcel: Mapped[str | None] = mapped_column(String, nullable=True)  # chelka
     sub_parcel: Mapped[str | None] = mapped_column(String, nullable=True)  # tat chelka
     property_address: Mapped[str] = mapped_column(String, nullable=False)
     property_city: Mapped[str] = mapped_column(String, nullable=False)
+
+    # Resolved property identifiers (Step 5.5 — Address Resolver)
+    resolved_gush: Mapped[str | None] = mapped_column(String, nullable=True)
+    resolved_chelka: Mapped[str | None] = mapped_column(String, nullable=True)
+    resolved_tat_chelka: Mapped[str | None] = mapped_column(String, nullable=True)
+    apartment_number_claimed: Mapped[str | None] = mapped_column(String, nullable=True)
+    property_coordinates: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
 
     # Deal
     deal_type: Mapped[DealType] = mapped_column(String, default=DealType.purchase, nullable=False)
