@@ -10,8 +10,8 @@ from app.schemas.party import PartyCreate, PartyOut
 
 class CaseCreate(BaseModel):
     deal_type: DealType = DealType.purchase
-    block: str
-    parcel: str
+    block: str | None = None
+    parcel: str | None = None
     sub_parcel: str | None = None
     property_address: str
     property_city: str
@@ -55,9 +55,14 @@ class CaseListItem(BaseModel):
 
 
 class CaseDetail(CaseListItem):
-    block: str
-    parcel: str
+    block: str | None
+    parcel: str | None
     sub_parcel: str | None
+    resolved_gush: str | None = None
+    resolved_chelka: str | None = None
+    resolved_tat_chelka: str | None = None
+    apartment_number_claimed: str | None = None
+    property_coordinates: dict | None = None
     deal_value_ils: int | None
     counterparty_lawyer_name: str | None
     counterparty_lawyer_phone: str | None
