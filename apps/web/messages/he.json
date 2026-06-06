@@ -71,14 +71,12 @@
     "resolved": "גוש {gush} / חלקה {chelka}",
     "coordinates": "קואורדינטות",
     "failed": "פתרון אוטומטי נכשל — נא להזין ידנית",
-    "tokenMissing": "טוקן GovMap לא הוגדר — נא להזין גוש/חלקה ידנית",
     "multiCandidate": "נמצאו מספר התאמות — נא לבחור או להזין ידנית",
     "manualTitle": "הזנה ידנית",
     "gush": "גוש",
     "chelka": "חלקה",
     "tatChelka": "תת חלקה",
-    "save": "שמירה",
-    "manualSaved": "גוש/חלקה נשמרו"
+    "save": "שמירה"
   },
   "newCase": {
     "title": "פתיחת תיק חדש",
