@@ -3,8 +3,8 @@ import { z } from "zod";
 // Mirrors the backend Pydantic CaseCreate. israeli_id is synthetic/fake only (Foundation).
 export const newCaseSchema = z.object({
   deal_type: z.enum(["purchase", "sale", "exchange"]),
-  block: z.string().min(1),
-  parcel: z.string().min(1),
+  block: z.string().optional(),
+  parcel: z.string().optional(),
   sub_parcel: z.string().optional(),
   property_address: z.string().min(1),
   property_city: z.string().min(1),

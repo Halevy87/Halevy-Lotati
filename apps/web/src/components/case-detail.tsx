@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { AddressResolutionCard } from "@/components/address-resolution-card";
 import { Card, StatusBadge } from "@/components/ui";
 import { api } from "@/lib/api";
 import { formatCurrencyILS, formatDate } from "@/lib/format";
@@ -112,6 +113,7 @@ export function CaseDetail({ caseId }: { caseId: string }) {
 
         {/* Sidebar */}
         <div className="space-y-4">
+          <AddressResolutionCard caseId={caseId} />
           <Card>
             <h3 className="mb-2 font-medium">{t("redFlags")}</h3>
             <p className="text-sm text-ink/50">{t("noRedFlags")}</p>
