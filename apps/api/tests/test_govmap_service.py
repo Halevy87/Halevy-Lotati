@@ -78,3 +78,19 @@ def test_govmap_http_error(monkeypatch):
     res = govmap.resolve("בת ים", "בר יהודה", "33", transport=_mock(handler))
     assert res.status == "failed"
     assert res.reason == "govmap_error"
+    assert res.error
+
+
+def test_invalid_parcel_id_returns_failed(monkeypatch):
+    monkeypatch.setattr(settings, "govmap_api_token", "test-token")
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if "autocomplete" in str(request.url):
+            return httpx.Response(200, json={"results": [
+                {"type": "address", "shape": "POINT(1.0 2.0)"}
+            ]})
+        return httpx.Response(200, json={"results": [{"text": "גוש 0 חלקה 142"}]})
+
+    res = govmap.resolve("עיר", "רחוב", "1", transport=_mock(handler))
+    assert res.status == "failed"
+    assert res.reason == "invalid_result"

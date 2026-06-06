@@ -22,7 +22,7 @@ from app.core.config import settings
 AUTOCOMPLETE_URL = "https://www.govmap.gov.il/api/search-service/autocomplete"
 PARCEL_IDENTIFY_URL = "https://www.govmap.gov.il/api/layers-catalog/identify"
 
-_POINT_RE = re.compile(r"POINT\(\s*([-\d.]+)\s+([-\d.]+)\s*\)")
+_POINT_RE = re.compile(r"POINT\(\s*([-\d.eE+]+)\s+([-\d.eE+]+)\s*\)")
 _PARCEL_RE = re.compile(r"גוש\s*(\d+)\s*חלקה\s*(\d+)")
 _TIMEOUT = 15.0
 
@@ -35,7 +35,7 @@ class AddressResolutionResult:
     gush: Optional[str] = None
     chelka: Optional[str] = None
     coordinates: Optional[dict] = None  # {"x": float, "y": float} in EPSG:3857
-    candidates: list = field(default_factory=list)  # [{"gush","chelka"}]
+    candidates: list[dict] = field(default_factory=list)  # [{"gush","chelka"}]
     raw_response: Optional[dict] = None
     resolution_time_ms: int = 0
     error: Optional[str] = None
@@ -45,7 +45,10 @@ def _extract_point(shape: str) -> Optional[dict]:
     m = _POINT_RE.search(shape or "")
     if not m:
         return None
-    return {"x": float(m.group(1)), "y": float(m.group(2))}
+    try:
+        return {"x": float(m.group(1)), "y": float(m.group(2))}
+    except ValueError:
+        return None
 
 
 def _parse_parcels(data: dict) -> list[dict]:
@@ -58,7 +61,8 @@ def _parse_parcels(data: dict) -> list[dict]:
 
 
 def _valid_id(value: Optional[str]) -> bool:
-    return bool(value) and value.isdigit() and 0 < int(value) < 100000
+    # Numeric and within a generous plausibility bound; widen if real data exceeds it.
+    return bool(value) and value.isdigit() and 0 < int(value) < 1_000_000
 
 
 def resolve(
@@ -73,7 +77,7 @@ def resolve(
     def ms() -> int:
         return int((time.monotonic() - start) * 1000)
 
-    full_address = f"{street} {number} {city}".strip()
+    full_address = " ".join(p for p in (street, number, city) if p)
     try:
         with httpx.Client(timeout=_TIMEOUT, transport=transport) as client:
             # Hop 1: address → coordinates (token-free)
@@ -125,7 +129,7 @@ def resolve(
                 status="auto_resolved", gush=gush, chelka=chelka,
                 coordinates=point, raw_response=data2, resolution_time_ms=ms(),
             )
-    except httpx.HTTPError as exc:
+    except (httpx.HTTPError, ValueError, KeyError) as exc:
         return AddressResolutionResult(
             status="failed", reason="govmap_error", error=str(exc), resolution_time_ms=ms()
         )
