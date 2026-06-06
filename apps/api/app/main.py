@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.routers import activity, cases, health, parties
+from app.routers import activity, address_resolution, cases, health, parties
 
 app = FastAPI(title="Halevi-Luttati API", version="0.1.0")
 
@@ -18,3 +18,4 @@ app.include_router(health.router)
 app.include_router(cases.router)
 app.include_router(parties.router)
 app.include_router(activity.router)
+app.include_router(address_resolution.router)
