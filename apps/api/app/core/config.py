@@ -10,5 +10,9 @@ class Settings(BaseSettings):
     # Permissive for local dev; tighten when the frontend origin is fixed.
     cors_origins: list[str] = ["http://localhost:3000"]
 
+    # GovMap official developer API token (free; registered by the firm). Empty = hop 2
+    # (coordinates→gush/chelka) is skipped and resolution falls back to manual entry.
+    govmap_api_token: str = ""
+
 
 settings = Settings()
