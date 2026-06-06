@@ -63,6 +63,23 @@
       "comingSoon": "יפותח בהמשך"
     }
   },
+  "addressResolution": {
+    "title": "פתרון כתובת",
+    "resolveButton": "פתרון כתובת לגוש/חלקה",
+    "resolving": "מאתר...",
+    "notResolved": "טרם נפתר",
+    "resolved": "גוש {gush} / חלקה {chelka}",
+    "coordinates": "קואורדינטות",
+    "failed": "פתרון אוטומטי נכשל — נא להזין ידנית",
+    "tokenMissing": "טוקן GovMap לא הוגדר — נא להזין גוש/חלקה ידנית",
+    "multiCandidate": "נמצאו מספר התאמות — נא לבחור או להזין ידנית",
+    "manualTitle": "הזנה ידנית",
+    "gush": "גוש",
+    "chelka": "חלקה",
+    "tatChelka": "תת חלקה",
+    "save": "שמירה",
+    "manualSaved": "גוש/חלקה נשמרו"
+  },
   "newCase": {
     "title": "פתיחת תיק חדש",
     "dealType": "סוג עסקה",
