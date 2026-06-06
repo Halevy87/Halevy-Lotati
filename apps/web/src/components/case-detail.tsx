@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { AddressResolutionCard } from "@/components/address-resolution-card";
+import { TabooPanel } from "@/components/taboo-panel";
 import { Card, StatusBadge } from "@/components/ui";
 import { api } from "@/lib/api";
 import { formatCurrencyILS, formatDate } from "@/lib/format";
@@ -114,6 +115,10 @@ export function CaseDetail({ caseId }: { caseId: string }) {
         {/* Sidebar */}
         <div className="space-y-4">
           <AddressResolutionCard caseId={caseId} />
+          <TabooPanel
+            gush={data.resolved_gush ?? data.block}
+            chelka={data.resolved_chelka ?? data.parcel}
+          />
           <Card>
             <h3 className="mb-2 font-medium">{t("redFlags")}</h3>
             <p className="text-sm text-ink/50">{t("noRedFlags")}</p>
