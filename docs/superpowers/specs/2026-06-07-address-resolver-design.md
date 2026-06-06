@@ -7,6 +7,16 @@
 **Source:** [PRD-Phase1-Pre-Signing.md](../../PRD-Phase1-Pre-Signing.md) + [PRD_DELTA_v1.0_to_v1.1.md](../../PRD_DELTA_v1.0_to_v1.1.md) (CHANGES 2, 6, 7)
 **Builds on:** [2026-06-03-foundation-design.md](2026-06-03-foundation-design.md)
 
+> **Implementation update (2026-06-07):** During the build we discovered hop-2 works
+> **token-free** via GovMap's **public GeoServer WMS** (`govmap:layer_parcel_all` at
+> `…/api/geoserver/ows/public/`) — a `GetFeatureInfo` at the address point plus
+> point-in-polygon selection returns the real gush/chelka (the same layer GovMap's own
+> address→gush/chelka tool uses). This **replaces** the token-gated `getSearchResultData`
+> hypothesis below. Verified live: `בר יהודה 33, בת ים → גוש 7137 / חלקה 157`. The
+> `GOVMAP_API_TOKEN` setting is now **unused** (kept only as a hook if we ever switch to the
+> official token-bound API); the manual-entry fallback remains for addresses GovMap can't
+> resolve. Sections 1 and 5 below describe the original token approach for historical context.
+
 ---
 
 ## Context
